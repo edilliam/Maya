@@ -1,3 +1,3 @@
 # Maya
 
-test edit
+A collection of my tools and scripts for Maya
