@@ -1,0 +1,159 @@
+Test 1 
+
+
+
+//Initiator Button
+int $wallHeight = 1;
+int $wallHeightCount = 0;
+int $wallDirection = 0;
+int $edgeSelection;
+int $brickNumber = 1;
+int $randomTile;
+string $currentSelection[];
+float $intCount;
+float $availableEdgesUp[] = { 3 };
+float $availableEdgesForward[] = { 1 };
+//10? arrays of four UV positions (matrix?)
+float $brick0001Array = {0, 1, 0.2, 1, 0.2, 0.9, 0, 0.9};
+float $brick0002Array = {0.2, 1, 0.4, 1, 0.4, 0.9, 0.2, 0.9};
+float $brick0003Array = {};
+float $brick0004Array = {};
+float $brick0005Array = {};
+float $brick0006Array = {};
+float $brick0007Array = {};
+float $brick0008Array = {};
+float $brick0009Array = {};
+
+polyPlane -w 2 -h 1 -sx 1 -sy 1 -ax 1 0 0 -cuv 2 -ch 1;
+$currentSelection = `ls -sl`;
+xform -pivots 0 -0.5 -1;
+move -rpr 0 0 0;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 1];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 2];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 3];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 4];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+//Initiator Button
+
+
+
+//Up Button////
+select -cl;
+select -r $currentSelection;
+select .e[$availableEdgesUp[0]];
+polyExtrudeEdge;
+move -r 0 1 0 ;
+$brickNumber++;
+$intCount = $availableEdgesUp[0];
+$availableEdgesUp[0] = $intCount + 3;
+$availableEdgesForward[size($availableEdgesForward)] = $availableEdgesUp[0] - 2;
+$randomTile = rand(1,10);
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 1];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 2];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 3];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 4];
+polyEditUV -r 0 -u 0.2 -v 0.2;
+print($brickNumber);
+//Up Button////
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+Test 2
+
+
+//Initiator Button
+int $wallHeight = 1;
+int $wallHeightCount = 0;
+int $wallDirection = 0;
+int $edgeSelection;
+int $brickNumber = 1;
+int $randomTile;
+string $currentSelection[];
+float $intCount;
+float $availableEdgesUp[] = { 3 };
+float $availableEdgesForward[] = { 1 };
+matrix $tileMatrix[2][8] = <<0, 0.9, 0.2, 0.9, 0, 1, 0.2, 1; 0.2, 0.9, 0.4, 0.9, 0.2, 1, 0.4, 1>>;
+polyPlane -w 2 -h 1 -sx 1 -sy 1 -ax 1 0 0 -cuv 2 -ch 1;
+hyperShade -assign testMat;
+$currentSelection = `ls -sl`;
+xform -pivots 0 -0.5 1;
+move -rpr 0 0 0;
+$randomTile = rand(0,2);
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 4];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][0] -v $tileMatrix[$randomTile][1];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 3];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][2] -v $tileMatrix[$randomTile][3];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 2];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][4] -v $tileMatrix[$randomTile][5];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 1];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][6] -v $tileMatrix[$randomTile][7];
+//Initiator Button
+
+
+//Up Button////
+select -cl;
+select -r $currentSelection;
+select .e[$availableEdgesUp[0]];
+polyExtrudeEdge;
+move -r 0 1 0 ;
+$brickNumber++;
+$intCount = $availableEdgesUp[0];
+$availableEdgesUp[0] = $intCount + 3;
+$availableEdgesForward[size($availableEdgesForward)] = $availableEdgesUp[0] - 2;
+$randomTile = rand(0,2);
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 4];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][0] -v $tileMatrix[$randomTile][1];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 3];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][2] -v $tileMatrix[$randomTile][3];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 1];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][4] -v $tileMatrix[$randomTile][5];
+select -cl;
+select -r $currentSelection;
+select -r .map[(4 * $brickNumber) - 2];
+polyEditUV -r 0 -u $tileMatrix[$randomTile][6] -v $tileMatrix[$randomTile][7];
+//Up Button////
+
+
+//Right Button////
+
+
+//Right Button////
+

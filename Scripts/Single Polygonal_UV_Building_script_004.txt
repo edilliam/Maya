@@ -1,0 +1,104 @@
+//Initiator Button
+polyCube -w 1 -h 1 -d 1;
+xform -pivots -0.5 -0.5 0.5;
+move -rpr 0 0 0;
+polyExtrudeFacet pCube1.f[4];
+select -r pCube1.f[4];
+move -r 1 0 0;
+int $intSwapArray[];
+int $intSwap;
+int $intSwap2;
+int $wallDirection = 0;
+int $totalFacesNumber = 10;
+int $wallDirection = 0;
+int $wallFaceCounter = 0;
+int $wallFaceNumber = 0;
+int $swapArrayCount = 0;
+int $vertexCount[];
+float $floatSwapArray[];
+float $availableFacesForward[] = { 4 };
+float $availableFacesLeft[] = { 7 };
+float $availableFacesRight[] = { 9 };
+float $availableFacesUp[] = { 1, 8 };
+//Initiator Button
+
+
+//Up Button
+
+if ($wallDirection == 0){ 
+    $wallFaceNumber = size($availableFacesUp);
+    select -cl;
+    
+    while ($wallFaceCounter < $wallFaceNumber){
+        select -tgl pCube1.f[$availableFacesUp[$wallFaceCounter]];
+        $wallFaceCounter++;        
+    }
+    
+    polyExtrudeFacet;
+    move -r -os -wd 0 1 0;
+    $intSwap = size($availableFacesUp);
+    $intSwap2 = 2 * $intSwap + 2;
+    $totalFacesNumber = $totalFacesNumber + $intSwap2;
+    $availableFacesForward[size($availableFacesForward)] = $totalFacesNumber - 2;
+    print$availableFacesForward; 
+    $wallFaceCounter = 0;
+    
+}    
+//Up Button
+
+//Down Button
+
+if ($wallDirection == 0){ 
+    $wallFaceNumber = size($availableFacesUp);
+    select -cl;
+    
+    while ($wallFaceCounter < $wallFaceNumber){
+        select -tgl pCube1.f[$availableFacesUp[$wallFaceCounter]];
+        $wallFaceCounter++;        
+    }
+    
+    move -r -os -wd 0 -1 0;
+    $vertexCount = `polyEvaluate -v pCube1`;
+    select ("pCube1.vtx [0:" + ($vertexCount[0] - 1) + "]");
+    polyMergeVertex  -d 0.01 -am 1 -ch 1;
+    $intSwap = size($availableFacesUp);
+    $inSwap2 = 2 * $intSwap + 2;
+    $totalFacesNumber = $totalFacesNumber - $intSwap2;
+    $wallFaceNumber = size($availableFacesForward);
+    $swapArrayCount = 0;
+    clear($floatSwapArray);
+    
+    while ($swapArrayCount < ($wallFaceNumber - 1)){ 
+        $floatSwapArray[$swapArrayCount] = $availableFacesForward[$swapArrayCount];
+        $swapArrayCount++;
+        }
+    
+    $availableFacesForward = $floatSwapArray;
+    print$availableFacesForward; 
+    $wallFaceCounter = 0;        
+}    
+//Down Button
+
+
+
+//Forward Button
+if ($wallDirection == 0){
+    $wallFaceNumber = size($availableFacesForward);
+    select -cl;
+    
+    while ($wallFaceCounter < $wallFaceNumber){
+        select -tgl pCube1.f[$availableFacesForward[$wallFaceCounter]];
+        $wallFaceCounter++;
+    }
+    
+    polyExtrudeFacet;
+    move -r -os -wd 1 0 0;
+    polyExtrudeFacet;
+    move -r -os -wd 1 0 0;
+    $wallFaceCounter = 0;
+    //$availableFacesUp[size($availableFacesUp)] = $totalFacesNumber - 2; 
+}
+//Forward Button
+
+print($totalFacesNumber);
+

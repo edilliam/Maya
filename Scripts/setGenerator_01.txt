@@ -1,0 +1,34 @@
+
+
+
+//Set Generator for probability arrays.
+
+int $intArray[100];
+int $intArrayCounter = 0;
+int $intWrite = 1;
+
+while ($intArrayCounter < 100){
+    
+    if ($intArrayCounter < 20){
+        $intArray[$intArrayCounter] = $intWrite;//1 repeated 20 times.
+        print($intArray[$intArrayCounter] + "\n");
+    }
+    
+    else if ($intArrayCounter < 30){
+        $intArray[$intArrayCounter] = $intWrite + 1;//2 repeated 10 times.
+        print($intArray[$intArrayCounter] + "\n");
+    }
+    
+    else if ($intArrayCounter < 35){
+        $intArray[$intArrayCounter] = $intWrite + 2;//3 repeated 5 times.
+        print($intArray[$intArrayCounter] + "\n");
+    }
+    
+    else {
+        $intArray[$intArrayCounter] = $intWrite + 3;//Business as usual.
+        $intWrite++;
+        print($intArray[$intArrayCounter] + "\n");
+    }
+    
+    $intArrayCounter++;
+}

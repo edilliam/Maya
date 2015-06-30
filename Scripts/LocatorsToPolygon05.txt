@@ -1,0 +1,112 @@
+
+
+//Create layer called GroundPLane////
+
+createDisplayLayer -name "GroundPlane" -number 1 -empty;
+layerEditorLayerButtonTypeChange GroundPlane;
+layerEditorLayerButtonTypeChange GroundPlane;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//Creates a polygon Tri from selected locators and sends to GroundPlane layer////
+
+string $selectionArray[] = `ls -sl -l`;
+
+
+float $vectorLocator1[3] = `xform -q -t -ws $selectionArray[0]`;
+float $vectorLocator2[3] = `xform -q -t -ws $selectionArray[1]`;
+float $vectorLocator3[3] = `xform -q -t -ws $selectionArray[2]`;
+
+
+polyCreateFacet -ch on -tx 1 -s 1 -p ($vectorLocator1[0]) ($vectorLocator1[1]) ($vectorLocator1[2]) -p ($vectorLocator2[0]) ($vectorLocator2[1]) ($vectorLocator2[2]) -p ($vectorLocator3[0]) ($vectorLocator3[1]) ($vectorLocator3[2]) ;
+
+editDisplayLayerMembers -noRecurse GroundPlane `ls -selection`;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Creates a polygon Quad from selected locators and sends to GroundPlane layer////
+
+string $selectionArray[] = `ls -sl -l`;
+
+
+float $vectorLocator1[3] = `xform -q -t -ws $selectionArray[0]`;
+float $vectorLocator2[3] = `xform -q -t -ws $selectionArray[1]`;
+float $vectorLocator3[3] = `xform -q -t -ws $selectionArray[2]`;
+float $vectorLocator4[3] = `xform -q -t -ws $selectionArray[3]`;
+
+
+polyCreateFacet -ch on -tx 1 -s 1 -p ($vectorLocator1[0]) ($vectorLocator1[1]) ($vectorLocator1[2]) -p ($vectorLocator2[0]) ($vectorLocator2[1]) ($vectorLocator2[2]) -p ($vectorLocator3[0]) ($vectorLocator3[1]) ($vectorLocator3[2]) -p ($vectorLocator4[0]) ($vectorLocator4[1]) ($vectorLocator4[2]) ;
+
+editDisplayLayerMembers -noRecurse GroundPlane `ls -selection`;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//Selects all objects in GroundPlane layer and merges vertices////
+
+layerEditorSelectObjects GroundPlane;
+polyUnite -ch 1 -mergeUVSets 1;
+polyMergeVertex  -d 0.01 -am 1 -ch 1;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Create new red lambert
+
+
+shadingNode -asShader lambert -name redLambertMat;
+setAttr "redLambertMat.color" -type double3 1 0 0 ;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Create cone, assign red mat and move to selected locator
+
+
+float $locatorPositionForCone[] = `xform -q -t -ws`;
+polyCone -name Tracking_Cone;
+string $stringTrackingCone[] = `ls -sl -l`;
+rotate -r -ws 180 0 0;
+move -rpr ($locatorPositionForCone[0]) ($locatorPositionForCone[1] + 1) ($locatorPositionForCone[2]);
+hyperShade -assign redLambertMat;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Create Cones, applies red lambert and moves to selected locators
+
+string $selectionArray[] = `ls -sl -l`;
+int $sizeSelectionArray = size($selectionArray);
+int $sizeSelectionArrayCounter = 0;
+
+while (($sizeSelectionArrayCounter) < ($sizeSelectionArray)){
+
+    select $selectionArray[$sizeSelectionArrayCounter]; 
+    float $locatorPositionForCone[] = `xform -q -t -ws`;
+    polyCone -name Tracking_Cone;
+    string $stringTrackingCone[] = `ls -sl -l`;
+    rotate -r -ws 180 0 0;
+    move -rpr ($locatorPositionForCone[0]) ($locatorPositionForCone[1] + 1) ($locatorPositionForCone[2]);
+    hyperShade -assign redLambertMat;
+    $sizeSelectionArrayCounter++;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
