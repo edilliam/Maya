@@ -112,7 +112,6 @@ while (($wallWidthCounter) <= ($wallWidth)){
 
 Fourth Test (Generate 4 walls of building with interlocking corners)
 
-//Auotomatic brick wall building script by Edward Hall 2013////
 // 2 x 1 Bricks must be moddelled first and correlate with Object array in declared variables////
 //Buildings are made wall by wall and column by column with even rows offset by half a brick////
 
