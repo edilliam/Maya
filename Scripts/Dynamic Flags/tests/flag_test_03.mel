@@ -1,0 +1,42 @@
+//Test 03: Texture + nCloth
+
+//set these////
+int $flagNumber = 50;
+//set these////
+
+
+int $flagColourCounter = 0;
+int $flagNumberCounter = 0;
+int $randomInt;
+float $randomFloat;
+vector $moveFlagVector = <<0, 0, 0>>;
+string $currentSelection[]; 
+
+string $flagColourArray[5] = {"blueFlagMat", "whiteFlagMat", "redFlagMat", "greenFlagMat", "yellowFlagMat"};
+string $flagPlaneArray[6] = {"pPlane1", "pPlane2", "pPlane3", "pPlane4", "pPlane5", "pPlane6"};
+
+
+//Main Loop.
+while (($flagNumberCounter) < ($flagNumber)){
+
+    $randomInt = rand(0,6); //set
+    select $flagPlaneArray[$randomInt];    
+    duplicate;
+    $currentSelection = `ls -sl`; 
+    hyperShade -assign $flagColourArray[$flagColourCounter];
+    move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+    createNCloth 0; 
+    select $currentSelection[0];  
+    select `ls -sl` .vtx[110];
+    select `ls -sl` .vtx[120];
+    createNConstraint transform 0;
+    $randomFloat = rand(1.5, 2);//optomise with better float values
+    $moveFlagVector = <<($moveFlagVector.x + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+	$flagNumberCounter++;
+	$flagColourCounter++;
+	
+	if (($flagColourCounter) == 5){
+	    $flagColourCounter = 0;
+	}	
+}
+//Main Loop.

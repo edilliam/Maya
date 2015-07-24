@@ -1,0 +1,112 @@
+//Test 05: nHair rope and dynamic
+
+//set these////
+int $flagNumber = 10;
+//set these////
+
+
+int $flagColourCounter = 0;
+int $flagNumberCounter = 0;
+int $randomInt;
+float $randomFloat;
+vector $moveFlagVector = <<0, 0, 0>>;
+vector $moveCircleVector = <<0, 0, 0>>;
+string $currentSelection[];
+string $currentSelectionArray[]; //Is this needed?
+string $currentCurveSelection[];
+string $currentNodeSelection[];
+string $currentExtrudedSelection[];
+
+string $flagColourArray[5] = {"blueFlagMat", "whiteFlagMat", "redFlagMat", "greenFlagMat", "yellowFlagMat"};
+string $flagPlaneArray[6] = {"pPlane1", "pPlane2", "pPlane3", "pPlane4", "pPlane5", "pPlane6"};
+
+
+//Main Loop.
+while (($flagNumberCounter) < ($flagNumber)){
+
+    if($flagNumberCounter == 0){    
+        $randomInt = rand(0,6); //set to size of plane array.
+        select $flagPlaneArray[$randomInt];    
+        duplicate;
+        $currentSelection = `ls -sl`; 
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        $randomFloat = rand(1.5, 2);//optomise with better float values
+        $moveFlagVector = <<($moveFlagVector.x + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;
+	}
+	
+	else{
+	    $randomInt = rand(0,6); //set to size of plane array.
+        select $flagPlaneArray[$randomInt];    
+        duplicate;
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        select -add $currentSelection;
+        $currentSelection = `ls -sl`;
+        select -r $currentSelection[1];
+        select -add $currentSelection[0];
+        polyUnite;
+        $currentSelection = `ls -sl`;
+        $randomFloat = rand(1.5, 2);//optomise with better float values
+        $moveFlagVector = <<($moveFlagVector.x + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;	    
+	}
+	
+	
+	
+	if($flagNumberCounter == $flagNumber){
+	    
+	    
+	    
+	    //nHair rope
+	    curve -d 2 -p -5 0 0 -p 6 0 0 -p 25 0 0;//change -p to locators.
+	    $currentCurveSelection = `ls -sl`;
+	    rebuildCurve -ch 1 -rpo 1 -rt 0 -end 1 -kr 0 -kcp 0 -kep 1 -kt 0 -s 200 -d 3 -tol 0.01;// change -s (spans)!
+	    select $currentCurveSelection;
+	    makeCurvesDynamic 2 { "1", "0", "1", "1", "0"};
+	    hide $currentCurveSelection;
+	    $currentCurveSelection = `ls -sl`;
+	    $currentNodeSelection = `listConnections -d 1 -sh 1 -t shape`;
+	    select $currentNodeSelection[0];
+	    $currentNodeSelection = `listConnections -t shape`;
+	    setAttr ($currentCurveSelection[0] + ".stretchResistance") 1500;
+	    circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 0.02 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1;//refine -r radius .02?
+	    rotate -r -os 0 0 -90;
+	    move -rpr -x -5;//change to locators
+	    select -tgl $currentNodeSelection[3];
+	    extrude -ch true -rn false -po 1 -et 2 -ucp 1 -fpt 1 -upn 1 -rotation 0 -scale 1 -rsp 1;
+	    $currentExtrudedSelection = `ls -sl`;
+	    setAttr ($currentCurveSelection[0] + ".selfCollide") 1;
+	    setAttr ($currentCurveSelection[0] + ".collideWidthOffset") 0.018;   
+	    //nHair rope	  
+	    
+	    
+	    //nCloth flags + assign shaders
+	    select $currentSelection;
+        createNCloth 0;
+        $flagNumberCounter = 0;
+        
+        while($flagNumberCounter < $flagNumber){
+            select $currentSelection;
+            select -tgl `ls -sl` .f[$flagNumberCounter * 100 : $flagNumberCounter * 100 + 99];
+            hyperShade -assign $flagColourArray[$flagColourCounter];
+            select $currentSelection;
+            select `ls -sl` .vtx[11 * (11 * ($flagNumberCounter + 1) - 1)];
+            select `ls -sl` .vtx[121 * ($flagNumberCounter + 1) - 1];
+            select -tgl $currentSelection;
+            select -tgl $currentExtrudedSelection; //make dynamic
+            //print(`ls -sl`);
+            createNConstraint pointToSurface 0;
+            $flagColourCounter++;
+            $flagNumberCounter++;
+            
+            if ($flagColourCounter == 5){
+	            $flagColourCounter = 0;
+            }
+        }
+        //nCloth flags + assign shaders 	    	    
+	}
+	
+	
+		
+}
+//Main Loop.

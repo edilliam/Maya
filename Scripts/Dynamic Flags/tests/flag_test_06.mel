@@ -1,0 +1,221 @@
+//Test 06: Locators + eular rotation
+
+
+//Locator Creator////
+spaceLocator -p 0 0 0 -name "locatorStart";
+setAttr "locatorStart.overrideEnabled" 1;
+setAttr "locatorStart.overrideColor" 13;
+spaceLocator -p 0 0 0 -name "locatorEnd";
+setAttr "locatorEnd.overrideEnabled" 1;
+setAttr "locatorEnd.overrideColor" 9;
+move -rpr 10 0 0;
+//Locator Creator////
+
+
+
+//Declared variables
+int $flagColourCounter = 0;
+int $flagNumberCounter = 0;
+int $randomInt;
+int $flagsCreatedNumber = 0;
+float $randomFloat;
+float $countX;
+float $countY;
+float $countZ;
+float $flagRopeLength;
+float $vertexFloat;
+float $vertexArray[];
+vector $rotEuler;
+vector $midPoint;
+vector $moveFlagVector = <<3, 0, 0>>;
+vector $locatorStartVector = <<0, 0, 0>>;
+vector $locatorEndVector = <<0, 0, 0>>;
+string $flagsCreatedString[];
+string $currentSelection[];
+string $currentSelection2[];
+string $currentCurveSelection[];
+string $currentNodeSelection[];
+string $currentExtrudedSelection[];
+string $flagsCreatedArray[];
+string $flagColourArray[5] = {"blueFlagMat", "whiteFlagMat", "redFlagMat", "greenFlagMat", "yellowFlagMat"};
+string $flagPlaneArray[] = {"flagMesh1", "flagMesh2", "flagMesh3", "flagMesh4", "flagMesh5", "flagMesh6", "flagMesh7", "flagMesh8", "flagMesh9"};
+int $flagPicked[];
+//Declared variables
+
+
+//Number Set Generator. 
+int $intArray[50];
+int $intArrayCounter = 0;
+int $intWrite = 0;
+
+while ($intArrayCounter < 30){
+    
+    if ($intArrayCounter < 22){
+        $intArray[$intArrayCounter] = $intWrite;//1 repeated 43 times. 
+        print($intArray[$intArrayCounter] + "\n");
+    }
+    
+    else {
+        $intArray[$intArrayCounter] = $intWrite + 1;//Business as usual.
+        $intWrite++; 
+        print($intArray[$intArrayCounter] + "\n");
+    }    
+    $intArrayCounter++;
+}
+//Number Set Generator.
+
+
+
+//Main Loop.
+
+//Get x,y,z coordinates for Locators 
+select locatorStart;
+vector $locatorStartVector = `xform -q -t -ws`;
+select locatorEnd;
+vector $locatorEndVector = `xform -q -t -ws`;
+//Get x,y,z coordinates for Locators
+
+//Mid point
+$countX = ($locatorStartVector.x + $locatorEndVector.x) / 2 ;
+$countY = ($locatorStartVector.y + $locatorEndVector.y) / 2 ;
+$countZ = ($locatorStartVector.z + $locatorEndVector.z) / 2 ;
+$midPoint = << ($countX), ($countY), ($countZ)  >>;
+//spaceLocator -p ($midPoint.x) ($midPoint.y) ($midPoint.z) -name "middleTest";
+//Mid Point
+
+//Vector magnitude (distance between locators)
+$countX = ($locatorEndVector.x - $locatorStartVector.x);
+$countY = ($locatorEndVector.y - $locatorStartVector.y);
+$countZ = ($locatorEndVector.z - $locatorStartVector.z);
+$flagRopeLength = (sqrt(($countX * $countX) + ($countY * $countY) + ($countZ * $countZ)));
+//Distance between locators (distance between locators)
+
+//Required Vector Euler Rotation
+vector $vectorMaster = << ($countX), ($countY), ($countZ) >>; 
+vector $vectorSlave = << (1), (0), (0) >>;
+$rotEuler = `angleBetween -euler -v1 ($vectorSlave.x) ($vectorSlave.y) ($vectorSlave.z) -v2 ($vectorMaster.x) ($vectorMaster.y) ($vectorMaster.z)`;
+print($rotEuler);
+//Required Vector Euler Rotation
+
+
+
+
+while (($moveFlagVector.x) <= ($flagRopeLength - 3)){
+
+    if($flagNumberCounter == 0){    
+        $randomInt = rand(0,50); 
+        select $flagPlaneArray[$intArray[$randomInt]];    
+        duplicate;
+        $currentSelection = `ls -sl`; 
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        $randomFloat = rand(0.1, 0.3);//Gap between flags
+        select .vtx[121 * ($flagNumberCounter + 1) - 1];
+        $vertexArray = `xform -q -t -ws`;
+        $vertexFloat = $vertexArray[0];
+        $moveFlagVector = <<($vertexFloat + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;
+    	$flagsCreatedNumber++;
+	}
+	
+	else{
+	    $randomInt = rand(0,50);
+        select $flagPlaneArray[$intArray[$randomInt]];    
+        duplicate;
+        $currentSelection2 = `ls -sl`;
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        select .vtx[121 * ($flagNumberCounter + 1) - 1];
+        $vertexArray = `xform -q -t -ws`;
+        $vertexFloat = $vertexArray[0];
+        select $currentSelection2;       
+        select -add $currentSelection;
+        $currentSelection = `ls -sl`;
+        select -r $currentSelection[1];
+        select -add $currentSelection[0];
+        polyUnite;
+        $currentSelection = `ls -sl`;
+        $randomFloat = rand(0.1, 0.3);//Gap between flags
+        $moveFlagVector = <<($vertexFloat + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;
+    	$flagsCreatedNumber++;	    
+	}
+	
+	
+	
+	if(($moveFlagVector.x) > ($flagRopeLength -3)){
+	    
+	    
+	    
+	    //nHair rope
+	    curve -d 2 -p ($locatorStartVector.x) ($locatorStartVector.y) ($locatorStartVector.z) -p ($midPoint.x) ($midPoint.y) ($midPoint.z) -p ($locatorEndVector.x) ($locatorEndVector.y) ($locatorEndVector.z);
+	    $currentCurveSelection = `ls -sl`;
+	    rebuildCurve -ch 1 -rpo 1 -rt 0 -end 1 -kr 0 -kcp 0 -kep 1 -kt 0 -s 500 -d 3 -tol 0.01;// change -s (spans)!
+	    select $currentCurveSelection;
+	    makeCurvesDynamic 2 { "1", "0", "1", "1", "0"};
+	    hide $currentCurveSelection;
+	    $currentCurveSelection = `ls -sl`;
+	    $currentNodeSelection = `listConnections -d 1 -sh 1 -t shape`;
+	    select $currentNodeSelection[0];
+	    $currentNodeSelection = `listConnections -t shape`;
+	    setAttr ($currentCurveSelection[0] + ".stretchResistance") 1500;
+	    circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 0.02 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1;//refine -r radius .02?
+	    //rotate -r -os ($rotEuler.x) ($rotEuler.y) ($rotEuler.z) ;//rotation doesn't work and not actually neccessary.
+	    move -rpr ($locatorStartVector.x) ($locatorStartVector.y) ($locatorStartVector.z);
+	    select -tgl $currentNodeSelection[3];        
+	    extrude -ch true -rn false -po 1 -et 2 -ucp 1 -fpt 1 -upn 1 -rotation 0 -scale 1 -rsp 1;
+	    hyperShade -assign ropeMat;
+	    $currentExtrudedSelection = `ls -sl`;
+	    setAttr ($currentCurveSelection[0] + ".selfCollide") 1;
+	    setAttr ($currentCurveSelection[0] + ".collideWidthOffset") 0.018;   
+	    //nHair rope	  
+	    
+	    
+	    //nCloth flags
+	    select $currentSelection;
+	    $flagsCreatedString = `ls -sl`;
+        createNCloth 0;
+        //nCloth flags	    	    
+	}
+	
+	
+		
+}
+
+
+//Asign flag shaders and nConstrains and then move to $midPoint and apply vector euler rotation 
+$flagNumberCounter = 0;
+
+while($flagNumberCounter < $flagsCreatedNumber){
+            select $currentSelection;
+            select -tgl `ls -sl` .f[$flagNumberCounter * 100 : $flagNumberCounter * 100 + 99];
+            hyperShade -assign $flagColourArray[$flagColourCounter];
+            select $currentSelection;
+            select `ls -sl` .vtx[11 * (11 * ($flagNumberCounter + 1) - 1) : 121 * ($flagNumberCounter + 1) - 1 ];
+            select -tgl $currentSelection;
+            select -tgl $currentExtrudedSelection;
+            createNConstraint pointToSurface 0;
+            $flagColourCounter++;
+            $flagNumberCounter++;
+            
+            if ($flagColourCounter == 5){
+	            $flagColourCounter = 0;
+            }
+}
+
+select $flagsCreatedString;
+//CenterPivot;
+move -rpr ($locatorStartVector.x) ($locatorStartVector.y) ($locatorStartVector.z);
+rotate -r ($rotEuler.x) ($rotEuler.y) ($rotEuler.z);
+//Asign flag shaders and nConstrains and then move to $midPoint and apply vector euler rotation 
+        
+        
+        
+//Main Loop.
+
+
+
+
+
+
+
+
+

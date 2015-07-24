@@ -1,0 +1,80 @@
+//Test 04: Single nCloth for all Meshes
+
+
+//set these////
+int $flagNumber = 10;
+//set these////
+
+
+int $flagColourCounter = 0;
+int $flagNumberCounter = 0;
+int $randomInt;
+float $randomFloat;
+vector $moveFlagVector = <<0, 0, 0>>;
+string $currentSelection[];
+string $currentSelectionArray[]; 
+
+string $flagColourArray[5] = {"blueFlagMat", "whiteFlagMat", "redFlagMat", "greenFlagMat", "yellowFlagMat"};
+string $flagPlaneArray[6] = {"pPlane1", "pPlane2", "pPlane3", "pPlane4", "pPlane5", "pPlane6"};
+
+
+//Main Loop.
+while (($flagNumberCounter) < ($flagNumber)){
+
+    if($flagNumberCounter == 0){    
+        $randomInt = rand(0,6); //set to size of plane array.
+        select $flagPlaneArray[$randomInt];    
+        duplicate;
+        $currentSelection = `ls -sl`; 
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        $randomFloat = rand(1.5, 2);//optomise with better float values
+        $moveFlagVector = <<($moveFlagVector.x + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;
+	}
+	
+	else{
+	    $randomInt = rand(0,6); //set to size of plane array.
+        select $flagPlaneArray[$randomInt];    
+        duplicate;
+        move -rpr ($moveFlagVector.x) ($moveFlagVector.y) ($moveFlagVector.z);
+        select -add $currentSelection;
+        $currentSelection = `ls -sl`;
+        select -r $currentSelection[1];
+        select -add $currentSelection[0];
+        polyUnite;
+        $currentSelection = `ls -sl`;
+        $randomFloat = rand(1.5, 2);//optomise with better float values
+        $moveFlagVector = <<($moveFlagVector.x + $randomFloat), ($moveFlagVector.y), ($moveFlagVector.z)>>;
+    	$flagNumberCounter++;	    
+	}
+	
+	
+	
+	if($flagNumberCounter == $flagNumber){
+        createNCloth 0;
+        $flagNumberCounter = 0;
+        
+        while($flagNumberCounter < $flagNumber){
+            select $currentSelection;
+            select -tgl `ls -sl` .f[$flagNumberCounter * 100 : $flagNumberCounter * 100 + 99];
+            hyperShade -assign $flagColourArray[$flagColourCounter];
+            select $currentSelection;
+            select `ls -sl` .vtx[11 * (11 * ($flagNumberCounter + 1) - 1)];
+            select `ls -sl` .vtx[121 * ($flagNumberCounter + 1) - 1];
+            createNConstraint transform 0;
+            $flagColourCounter++;
+            $flagNumberCounter++;
+            
+            if ($flagColourCounter == 5){
+	            $flagColourCounter = 0;
+            }
+        } 	    	    
+	}
+	
+	
+		
+}
+//Main Loop.
+
+
+

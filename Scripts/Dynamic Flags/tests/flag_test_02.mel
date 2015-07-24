@@ -1,0 +1,41 @@
+//Test 02: Matrix Flag Placement
+
+
+//set these////
+int $flagNumber = 10;
+//set these////
+
+
+//Declared variables////
+string $flagArray[25] = {"pPlane1","pPlane2","pPlane3","pPlane4","pPlane5","pPlane6","pPlane7","pPlane8","pPlane9","pPlane10","pPlane11","pPlane12","pPlane13","pPlane14","pPlane15","pPlane16","pPlane17","pPlane18","pPlane19","pPlane20","pPlane21","pPlane22","pPlane23","pPlane24","pPlane25"};
+matrix $flagMatrix[5] [5] = <<0,1,2,3,4 ; 5,6,7,8,9 ; 10,11,12,13,14 ; 15,16,17,18,19 ; 20,21,22,23,24>>;
+
+int $random;
+int $flagNumberCounter = 1;
+int $flagPositionCounter;
+int $flagColourCounter = 0;
+int $arrayStringPicker;
+vector $moveVector = <<0, 0, 0>>;
+//Declared variables////
+
+select -r curve1;
+duplicate;
+move -rpr 0 0 0;
+
+while (($flagNumberCounter) <= ($flagNumber)){
+    
+    $random = rand(0,4);
+    $arrayStringPicker = $flagMatrix[$flagColourCounter][$random];
+    select $flagArray[$arrayStringPicker];
+    duplicate;
+    move -rpr ($moveVector.x) ($moveVector.y) ($moveVector.z);  
+    $flagNumberCounter = (($flagNumberCounter) + 1);
+    $moveVector = <<($moveVector.x), ($moveVector.y), ($moveVector.z - 2)>>;
+    $flagColourCounter = (($flagColourCounter) + 1);
+    
+    if (($flagColourCounter) == 5){
+        $flagColourCounter = 0;
+    } 
+    
+    
+}

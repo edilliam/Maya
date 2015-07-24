@@ -1,0 +1,36 @@
+//Test 01: Plane placement on a curve.
+
+
+//set these////
+int $flagNumber = 100;
+//set these////
+
+
+//Declared variables////
+string $flagsArray[5] = {"pPlane1", "pPlane2", "pPlane3", "pPlane4", "pPlane5"};
+int $random;
+int $flagNumberCounter = 1;
+int $flagPositionCounter;
+int $flagColourCounter = 0;
+vector $moveVector = <<0, 0, 0>>;
+//Declared variables////
+
+select -r curve1;
+duplicate;
+move -rpr 0 0 0;
+
+while (($flagNumberCounter) <= ($flagNumber)){
+    
+    select $flagsArray[$flagColourCounter];
+    duplicate;
+    move -rpr ($moveVector.x) ($moveVector.y) ($moveVector.z);  
+    $flagNumberCounter = (($flagNumberCounter) + 1);
+    $moveVector = <<($moveVector.x), ($moveVector.y), ($moveVector.z - 2)>>;
+    $flagColourCounter = (($flagColourCounter) + 1);
+    
+    if (($flagColourCounter) == 5){
+        $flagColourCounter = 0;
+    } 
+    
+    
+}
