@@ -1,0 +1,283 @@
+//Fourth Test (Generate 4 walls of building with interlocking corners)
+
+// 2 x 1 Bricks must be moddelled first and correlate with Object array in declared variables////
+//Buildings are made wall by wall and column by column with even rows offset by half a brick////
+
+
+//set these////
+int $wallWidth = 10;
+int $wallHeight = 10;
+int $buildingTrue = 1;   //1 for four walled building, 0 for single wall////
+//set these////
+
+
+//Declared Variables////
+int $random;
+string $bricksArray[10] = {"pCube1", "pCube2", "pCube3", "pCube4", "pCube5", "pCube6", "pCube7", "pCube8", "pCube9", "pCube10"}; //Object Array////
+int $wallWidthCounter = 1;
+int $wallHeightCounter = 1;
+int $wallProgressCounter;
+vector $moveVectorWidth = <<0, 0, 0>>;
+vector $moveVectorHeight = <<0, 1, 0>>;
+//Declared Variables////
+  
+
+//North Wall////
+
+while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+
+	if (($wallHeight) > 1){
+
+		while (($wallHeightCounter) < ($wallHeight)){
+			$random = rand(1,10);
+			select $bricksArray[$random];
+			duplicate;
+			
+			if (($wallHeightCounter) % 2 == 0){   //Even row determiner////
+			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z - 1)>>;
+			}
+			
+			else {
+			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z + 1)>>;
+			}
+			
+			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 1), ($moveVectorHeight.z)>>;
+			$wallHeightCounter = (($wallHeightCounter) + 1); 
+		}
+	}
+
+	$moveVectorHeight = <<($moveVectorHeight.x), (1), ($moveVectorWidth.z + 2)>>;
+    $wallHeightCounter = 1;	 
+	$moveVectorWidth = <<($moveVectorWidth.x), ($moveVectorWidth.y), ($moveVectorWidth.z + 2)>>;
+	$wallWidthCounter = (($wallWidthCounter) + 1);
+	print ( "North wall column " + (($wallWidthCounter) - 1) + " done! :)" + "\n");   //Prints wall column progress////
+	
+}
+
+$wallProgressCounter = (($wallProgressCounter) + 1);
+$wallWidthCounter = 1;
+$wallHeightCounter = 1;
+
+//East Wall////
+
+if (($buildingTrue) == 1){
+    $moveVectorWidth = <<($moveVectorWidth.x + 1), ($moveVectorWidth.y), ($moveVectorWidth.z)>>;
+    $moveVectorHeight = <<($moveVectorHeight.x +1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    
+    while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	rotate -r -ws 0 -90 0;
+	move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+
+    	if (($wallHeight) > 1){
+    
+    		while (($wallHeightCounter) < ($wallHeight)){
+    			$random = rand(1,10);
+    			select $bricksArray[$random];
+    			duplicate;
+    			rotate -r -ws 0 -90 0;
+    			
+    			if (($wallHeightCounter) % 2 == 0){   //Even row determiner////
+    			    $moveVectorHeight = <<($moveVectorHeight.x + 1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    			}
+    			
+    			else {
+    			    $moveVectorHeight = <<($moveVectorHeight.x - 1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    			}
+    			
+    			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+    			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 1), ($moveVectorHeight.z)>>;
+    			$wallHeightCounter = (($wallHeightCounter) + 1); 
+    		}
+    	}
+    
+    	    $moveVectorHeight = <<($moveVectorWidth.x - 2), (1), ($moveVectorHeight.z)>>;
+            $wallHeightCounter = 1;	 
+    	    $moveVectorWidth = <<($moveVectorWidth.x - 2), ($moveVectorWidth.y), ($moveVectorWidth.z)>>;
+    	    $wallWidthCounter = (($wallWidthCounter) + 1);
+    	    print ( "East wall column " + (($wallWidthCounter) - 1) + " done! :)" + "\n");   //Prints wall column progress////
+    }
+}
+
+$wallProgressCounter = (($wallProgressCounter) + 1);
+$wallWidthCounter = 1;
+$wallHeightCounter = 1;
+
+
+//South Wall////
+
+if (($buildingTrue) == 1){
+    $moveVectorWidth = <<($moveVectorWidth.x), ($moveVectorWidth.y), ($moveVectorWidth.z + 1)>>;
+    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z + 1)>>;
+    
+    while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	rotate -r -ws 0 -180 0;
+	move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+
+    	if (($wallHeight) > 1){
+    
+    		while (($wallHeightCounter) < ($wallHeight)){
+    			$random = rand(1,10);
+    			select $bricksArray[$random];
+    			duplicate;
+    			rotate -r -ws 0 -180 0;
+    			
+    			if (($wallHeightCounter) % 2 == 0){   //Even row determiner////
+    			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z + 1)>>;
+    			}
+    			
+    			else {
+    			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z - 1)>>;
+    			}
+    			
+    			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+    			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 1), ($moveVectorHeight.z)>>;
+    			$wallHeightCounter = (($wallHeightCounter) + 1); 
+    		}
+    	}
+    
+    	    $moveVectorHeight = <<($moveVectorHeight.x), (1), ($moveVectorWidth.z - 2)>>;
+            $wallHeightCounter = 1;	 
+    	    $moveVectorWidth = <<($moveVectorWidth.x), ($moveVectorWidth.y), ($moveVectorWidth.z - 2)>>;
+    	    $wallWidthCounter = (($wallWidthCounter) + 1);
+    	    print ( "South wall column " + (($wallWidthCounter) - 1) + " done! :)" + "\n");   //Prints wall column progress////
+    }
+}
+
+$wallProgressCounter = (($wallProgressCounter) + 1);
+$wallWidthCounter = 1;
+$wallHeightCounter = 1;
+    
+
+//West Wall////
+
+if (($buildingTrue) == 1){
+    $moveVectorWidth = <<($moveVectorWidth.x - 1), ($moveVectorWidth.y), ($moveVectorWidth.z)>>;
+    $moveVectorHeight = <<($moveVectorHeight.x - 1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    
+    while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	rotate -r -ws 0 90 0;
+	move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+
+    	if (($wallHeight) > 1){
+    
+    		while (($wallHeightCounter) < ($wallHeight)){
+    			$random = rand(1,10);
+    			select $bricksArray[$random];
+    			duplicate;
+    			rotate -r -ws 0 90 0;
+    			
+    			if (($wallHeightCounter) % 2 == 0){   //Even row determiner////
+    			    $moveVectorHeight = <<($moveVectorHeight.x - 1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    			}
+    			
+    			else {
+    			    $moveVectorHeight = <<($moveVectorHeight.x + 1), ($moveVectorHeight.y), ($moveVectorHeight.z)>>;
+    			}
+    			
+    			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+    			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 1), ($moveVectorHeight.z)>>;
+    			$wallHeightCounter = (($wallHeightCounter) + 1); 
+    		}
+    	}
+    
+    	    $moveVectorHeight = <<($moveVectorWidth.x + 2), (1), ($moveVectorHeight.z)>>;
+            $wallHeightCounter = 1;	 
+    	    $moveVectorWidth = <<($moveVectorWidth.x + 2), ($moveVectorWidth.y), ($moveVectorWidth.z)>>;
+    	    $wallWidthCounter = (($wallWidthCounter) + 1);
+    	    print ( "West wall column " + (($wallWidthCounter) - 1) + " done! :)" + "\n");   //Prints wall column progress////
+    }
+}
+
+$wallProgressCounter = (($wallProgressCounter) + 1);
+$wallWidthCounter = 1;
+$wallHeightCounter = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

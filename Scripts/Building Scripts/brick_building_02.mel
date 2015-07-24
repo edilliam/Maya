@@ -1,0 +1,96 @@
+//Second Test (Duplicate 10 Cubes at random and place in line):
+
+//set these////
+int $wallWidth = 10;
+//set these////
+
+int $random;
+string $bricksArray[10] = {"pCube1", "pCube2", "pCube3", "pCube4", "pCube5", "pCube6", "pCube7", "pCube8", "pCube9", "pCube10"};
+int $wallWidthCounter = 1;
+vector $moveVector = <<0, 0, 0>>; 
+
+while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	print ( "(" + ($wallWidthCounter) + ") " + "Cube " + $random + " was duplicated. \n");
+	move -rpr ($moveVector.x) ($moveVector.y) ($moveVector.z);
+	$moveVector = <<($moveVector.x), ($moveVector.y), ($moveVector.z + 2)>>;
+	$wallWidthCounter = (($wallWidthCounter) + 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

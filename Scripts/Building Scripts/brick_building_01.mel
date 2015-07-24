@@ -1,0 +1,82 @@
+//First Test (Duplicate 1 box at random and move pivot point to origin:
+
+//Selct random cube 1- 10 and move pivot to origin////
+int $random;
+string $bricksArray[10] = {"pCube1", "pCube2", "pCube3", "pCube4", "pCube5", "pCube6", "pCube7", "pCube8", "pCube9", "pCube10"};
+
+$random = rand(1,10);
+select $bricksArray[$random];
+duplicate;
+print ("Cube " + $random + " was duplicated.");
+move -rpr 0 0 0; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

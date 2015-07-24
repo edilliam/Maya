@@ -1,0 +1,168 @@
+//Sixth Test: Directional Buttons and positional Locator
+
+//set these////
+int $wallHeight = 10;
+//set these////
+
+
+
+//Declared Variables////
+int $random;
+int $wallHeightCounter = 0;
+string $bricksArray[10] = {"pCube1", "pCube2", "pCube3", "pCube4", "pCube5", "pCube6", "pCube7", "pCube8", "pCube9", "pCube10"}; //Object Array////
+int $wallDirection;
+vector $buildLocator = <<0, 0, 0>>;
+//Declared Variables////
+
+
+
+
+// Seperate Button to Intialise locator////
+//spaceLocator -p 0 0 0;////
+//rename "Build_Locator";//// 
+
+//East////
+
+
+$buildLocator = `xform -q -t -ws Build_Locator`;
+$wallHeightCounter = 0;
+
+while (($wallHeightCounter) < ($wallHeight)){
+    $random = rand(1,10);
+    select $bricksArray[$random];
+    duplicate;
+    
+    if ($wallHeightCounter == 0){
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+    
+    else if (($wallHeightCounter) % 2 == 0){
+        $buildLocator = <<($buildLocator.x), ($buildLocator.y), ($buildLocator.z - 1)>>;
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+    			
+    else {
+        $buildLocator = <<($buildLocator.x), ($buildLocator.y), ($buildLocator.z + 1)>>;
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+
+    $wallHeightCounter++;
+    $buildLocator = <<($buildLocator.x), ($buildLocator.y + 1), ($buildLocator.z)>>;
+}
+
+$buildLocator = `xform -q -t -ws Build_Locator`;
+$buildLocator = <<($buildLocator.x), ($buildLocator.y), ($buildLocator.z + 2)>>;
+select -r Build_Locator ;
+move ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+
+
+//South////
+
+$buildLocator = `xform -q -t -ws Build_Locator`;
+$wallHeightCounter = 0;
+
+while (($wallHeightCounter) < ($wallHeight)){
+    $random = rand(1,10);
+    select $bricksArray[$random];
+    duplicate;
+    rotate -r -ws 0 -90 0;
+    
+    if ($wallHeightCounter == 0){
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+    
+    else if (($wallHeightCounter) % 2 == 0){
+        $buildLocator = <<($buildLocator.x + 1), ($buildLocator.y), ($buildLocator.z)>>;
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+    			
+    else {
+        $buildLocator = <<($buildLocator.x - 1), ($buildLocator.y), ($buildLocator.z)>>;
+        move -rpr ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+    }
+
+    $wallHeightCounter++;
+    $buildLocator = <<($buildLocator.x), ($buildLocator.y + 1), ($buildLocator.z)>>;
+}
+
+$buildLocator = `xform -q -t -ws Build_Locator`;
+$buildLocator = <<($buildLocator.x - 2), ($buildLocator.y), ($buildLocator.z)>>;
+select -r Build_Locator ;
+move ($buildLocator.x) ($buildLocator.y) ($buildLocator.z);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

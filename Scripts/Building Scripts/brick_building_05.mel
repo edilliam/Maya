@@ -1,0 +1,97 @@
+//Fifth Test: (Wall ends with 1 x 1 bricks)
+
+
+string $bricks1x1Array[10] = {"pCube11", "pCube12", "pCube13", "pCube14", "pCube15", "pCube16", "pCube17", "pCube18", "pCube19", "pCube20"};
+
+$random = rand(1,10);
+select $bricks1x1Array[$random];
+duplicate;
+move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+$moveVectorHeight = <<($moveVectorHeight.x), (0), ($moveVectorHeight.z)>>;  
+
+	if (($wallHeight) > 1){
+        
+		while (($wallHeightCounter) < ($wallHeight)){
+			$random = rand(1,10);
+			select $bricks1x1Array[$random];
+			duplicate;
+			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 2), ($moveVectorHeight.z)>>;
+			$wallHeightCounter++;
+			$wallHeightCounter++; 
+		}
+	}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

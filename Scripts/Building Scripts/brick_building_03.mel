@@ -1,0 +1,121 @@
+//Third Test (Generate brick wall with offset rows of any width and height):
+
+//set these////
+int $wallWidth = 10;
+int $wallHeight = 10;
+//set these////
+
+int $random;
+string $bricksArray[10] = {"pCube1", "pCube2", "pCube3", "pCube4", "pCube5", "pCube6", "pCube7", "pCube8", "pCube9", "pCube10"};
+int $wallWidthCounter = 1;
+int $wallHeightCounter = 1;
+vector $moveVectorWidth = <<0, 0, 0>>;
+vector $moveVectorHeight = <<0, 1, 0>>;  
+
+while (($wallWidthCounter) <= ($wallWidth)){	
+	$random = rand(1,10);
+	select $bricksArray[$random];
+	duplicate;
+	move -rpr ($moveVectorWidth.x) ($moveVectorWidth.y) ($moveVectorWidth.z);
+
+	if (($wallHeight) > 1){
+
+		while (($wallHeightCounter) < ($wallHeight)){
+			$random = rand(1,10);
+			select $bricksArray[$random];
+			duplicate;
+			
+			if (($wallHeightCounter) % 2 == 0){
+			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z - 1)>>;
+			}
+			
+			else {
+			    $moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y), ($moveVectorHeight.z + 1)>>;
+			}
+			
+			move -rpr ($moveVectorHeight.x) ($moveVectorHeight.y) ($moveVectorHeight.z);
+			$moveVectorHeight = <<($moveVectorHeight.x), ($moveVectorHeight.y + 1), ($moveVectorHeight.z)>>;
+			$wallHeightCounter = (($wallHeightCounter) + 1); 
+		}
+	}
+
+	$moveVectorHeight = <<($moveVectorHeight.x), (1), ($moveVectorWidth.z + 2)>>;
+    $wallHeightCounter = 1;	 
+	$moveVectorWidth = <<($moveVectorWidth.x), ($moveVectorWidth.y), ($moveVectorWidth.z + 2)>>;
+	$wallWidthCounter = (($wallWidthCounter) + 1);
+	print ( "Column " + (($wallWidthCounter) - 1) + "\n");
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
