@@ -1,0 +1,23 @@
+//Create cone, assign red mat and move to selected locator
+
+
+float $locatorPositionForCone[] = `xform -q -t -ws`;
+polyCone -name Tracking_Cone;
+string $stringTrackingCone[] = `ls -sl -l`;
+rotate -r -ws 180 0 0;
+move -rpr ($locatorPositionForCone[0]) ($locatorPositionForCone[1] + 1) ($locatorPositionForCone[2]);
+hyperShade -assign redLambertMat;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

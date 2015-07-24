@@ -1,0 +1,18 @@
+//Create layer called GroundPLane////
+
+createDisplayLayer -name "GroundPlane" -number 1 -empty;
+layerEditorLayerButtonTypeChange GroundPlane;
+layerEditorLayerButtonTypeChange GroundPlane;
+
+
+
+
+
+
+
+
+
+
+
+
+

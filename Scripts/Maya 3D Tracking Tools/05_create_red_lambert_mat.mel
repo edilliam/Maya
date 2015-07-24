@@ -1,0 +1,16 @@
+//Create new red lambert
+
+
+shadingNode -asShader lambert -name redLambertMat;
+setAttr "redLambertMat.color" -type double3 1 0 0 ;
+
+
+
+
+
+
+
+
+
+
+

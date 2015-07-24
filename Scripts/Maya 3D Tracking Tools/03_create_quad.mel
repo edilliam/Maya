@@ -1,0 +1,31 @@
+//Creates a polygon Quad from selected locators and sends to GroundPlane layer////
+
+string $selectionArray[] = `ls -sl -l`;
+
+
+float $vectorLocator1[3] = `xform -q -t -ws $selectionArray[0]`;
+float $vectorLocator2[3] = `xform -q -t -ws $selectionArray[1]`;
+float $vectorLocator3[3] = `xform -q -t -ws $selectionArray[2]`;
+float $vectorLocator4[3] = `xform -q -t -ws $selectionArray[3]`;
+
+
+polyCreateFacet -ch on -tx 1 -s 1 -p ($vectorLocator1[0]) ($vectorLocator1[1]) ($vectorLocator1[2]) -p ($vectorLocator2[0]) ($vectorLocator2[1]) ($vectorLocator2[2]) -p ($vectorLocator3[0]) ($vectorLocator3[1]) ($vectorLocator3[2]) -p ($vectorLocator4[0]) ($vectorLocator4[1]) ($vectorLocator4[2]) ;
+
+editDisplayLayerMembers -noRecurse GroundPlane `ls -selection`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
